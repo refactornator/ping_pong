@@ -5,7 +5,14 @@ defmodule Ping do
 
   def loop do
     receive do
-      {:pong, from} -> send(from, {:ping, self()})
+      {:pong, from} ->
+        IO.puts "ping ->"
+        :timer.sleep 500
+        send(from, {:ping, self()})
+      {:ping, from} ->
+        IO.puts "            <- pong"
+        :timer.sleep 500
+        send(from, {:pong, self()})
     end
     loop()
   end
